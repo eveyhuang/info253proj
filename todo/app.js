@@ -55,9 +55,16 @@ app.post('/addTask', function (req, res) {
   var email = req.body.email;
   console.log("add task " + taskname);
   db.run("INSERT INTO tasklog " +
-      "(username, taskid, taskname, location,date, status) " +
+      "(username, taskid, taskname, location, date, status) " +
       "VALUES (?, ?, ?, ?, ?, ?)",
         email,0,taskname,"","",0);
+});
+app.post('/fetchTasks', function (req, res) {
+	var email = req.body.email;
+	console.log("fetch tasks " + email);
+	db.get("SELECT taskid, taskname, location, date, status FROM tasklog WHERE username = ?", email, function(err, row) {
+		res.render('index.html');
+	});
 });
 var bourbon = require('node-bourbon');
 bourbon.includePaths // Array of Bourbon paths 

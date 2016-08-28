@@ -32,6 +32,8 @@ function newElement() {
   var inputValue = document.getElementById("myInput").textContent;
   var t = document.createTextNode(inputValue);
   var username = document.getElementById('username').innerHTML.trim()
+    //list tasks
+  $.post("/fetchTasks", {email: username});
     //add task
   $.post("/addTask",{email:username, taskname:inputValue});
   li.appendChild(t);
@@ -41,7 +43,6 @@ function newElement() {
     document.getElementById("myUL").appendChild(li);
   }
   document.getElementById("myInput").value = "";
-
 
   var span = document.createElement("SPAN");
   var txt = document.createTextNode("\u00D7");
