@@ -1,4 +1,3 @@
-// Create a "close" button and append it to each list item
 var myNodelist = document.getElementsByTagName("LI");
 var i;
 for (i = 0; i < myNodelist.length; i++) {
@@ -30,7 +29,7 @@ list.addEventListener('click', function(ev) {
 // Create a new list item when clicking on the "Add" button
 function newElement() {
   var li = document.createElement("li");
-  var inputValue = document.getElementById("myInput").value;
+  var inputValue = document.getElementById("myInput").textContent;
   var t = document.createTextNode(inputValue);
   li.appendChild(t);
   if (inputValue === '') {
