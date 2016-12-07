@@ -51,14 +51,13 @@ app.post('/login', function (req, res) {
   });
 });
 app.post('/addTask', function (req, res) {
-  var taskname = req.query.taskname;
-  var password = req.body.password;
-  db.get("SELECT password FROM userlog where username = ?", email, function(err, row) {
-    if(row.password == password){
-      res.render('index.html', {'username':email});
-    }
-
-  });
+  var taskname = req.body.taskname;
+  var email = req.body.email;
+  console.log("add task " + taskname);
+  db.run("INSERT INTO tasklog " +
+      "(username, taskid, taskname, location,date, status) " +
+      "VALUES (?, ?, ?, ?, ?, ?)",
+        email,0,taskname,"","",0);
 });
 var bourbon = require('node-bourbon');
 bourbon.includePaths // Array of Bourbon paths 

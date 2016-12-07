@@ -31,6 +31,9 @@ function newElement() {
   var li = document.createElement("li");
   var inputValue = document.getElementById("myInput").textContent;
   var t = document.createTextNode(inputValue);
+  var username = document.getElementById('username').innerHTML.trim()
+    //add task
+  $.post("/addTask",{email:username, taskname:inputValue});
   li.appendChild(t);
   if (inputValue === '') {
     alert("You must write something!");
@@ -38,7 +41,8 @@ function newElement() {
     document.getElementById("myUL").appendChild(li);
   }
   document.getElementById("myInput").value = "";
-  $.post("/addTask",{"taskname":inputValue})
+
+
   var span = document.createElement("SPAN");
   var txt = document.createTextNode("\u00D7");
   span.className = "close";
