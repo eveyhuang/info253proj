@@ -1,11 +1,11 @@
-var express = require('express'); // Adding the express library 
+var express = require('express'); // Adding the express library
 var mustacheExpress = require('mustache-express'); // Adding mustache template system
 var app = express(); // initializing application
 var template_engine = mustacheExpress(); // initializing template engine
 var bodyParser = require('body-parser');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('db.db');
-// parse application/x-www-form-urlencoded 
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // set the path "/static" to serve files from the static folder
 
@@ -30,8 +30,8 @@ app.post('/signup', function (req, res) {
 
     db.run("INSERT INTO userlog " +
     	"(username, password) " +
-    	"VALUES (?, ?)", 
-    		email, 
+    	"VALUES (?, ?)",
+    		email,
     		password);
     res.render('index.html');
 
@@ -47,6 +47,8 @@ app.post('/login', function (req, res) {
   });
 });
 
+var bourbon = require('node-bourbon');
+bourbon.includePaths // Array of Bourbon paths 
 
 // Start up server on port 3000 on host localhost
 var server = app.listen(3000, function () {
