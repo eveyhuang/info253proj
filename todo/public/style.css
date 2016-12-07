@@ -1,4 +1,3 @@
-
 @import '//fonts.googleapis.com/css?family=Quattrocento+Sans|Gravitas+One';
 @import '//file.myfontastic.com/ZaFwNCeg8fYbraeqqP46nE/icons.css';
 *,
@@ -12,7 +11,8 @@ body {
 h1,
 h3 {
   text-align: center;
-  font-family: 'Gravitas One', cursive;
+  /*font-family: 'Gravitas One', cursive;*/
+  font-family: 'Special Elite', cursive;
   margin: 0;
 }
 [class*='ico-'] {

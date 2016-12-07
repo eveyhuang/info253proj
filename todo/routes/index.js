@@ -38,7 +38,7 @@ function newElement() {
     document.getElementById("myUL").appendChild(li);
   }
   document.getElementById("myInput").value = "";
-
+  $.post("/addTask",{"taskname":inputValue})
   var span = document.createElement("SPAN");
   var txt = document.createTextNode("\u00D7");
   span.className = "close";

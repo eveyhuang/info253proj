@@ -17,12 +17,12 @@ app.use('/routes', express.static(__dirname + '/routes'));
 app.use('/public', express.static(__dirname + '/public'));
 // Define your routes here
 app.get('/', function (req, res) {
-  res.render('index.html', {'username':'guest'});
+  res.render('index.html', {"username": "Guest"});
 });
 
 app.get('/login', function (req, res) {
 
-  res.render('login.html');
+  res.render('login.html',{"notification": ""});
 });
 app.post('/signup', function (req, res) {
    var email = req.body.email;
@@ -33,20 +33,33 @@ app.post('/signup', function (req, res) {
     	"VALUES (?, ?)",
     		email,
     		password);
-    res.render('index.html');
+    res.render('index.html',{"username": email});
 
 });
 app.post('/login', function (req, res) {
 	var email = req.body.email;
-   var password = req.body.password;
+  var password = req.body.password;
 	db.get("SELECT password FROM userlog where username = ?", email, function(err, row) {
-		if(row.password == password){
+    if(row == null){
+      res.render('login.html', {"notification": "Username not found!"});
+    } else if(row.password == password){
 			res.render('index.html', {'username':email});
-		}
+		} else {
+      res.render('login.html', {"notification": "Wrong password!"});
+    }
 
   });
 });
+app.post('/addTask', function (req, res) {
+  var taskname = req.query.taskname;
+  var password = req.body.password;
+  db.get("SELECT password FROM userlog where username = ?", email, function(err, row) {
+    if(row.password == password){
+      res.render('index.html', {'username':email});
+    }
 
+  });
+});
 var bourbon = require('node-bourbon');
 bourbon.includePaths // Array of Bourbon paths 
 
