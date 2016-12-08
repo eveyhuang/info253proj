@@ -5,6 +5,7 @@ var template_engine = mustacheExpress(); // initializing template engine
 var bodyParser = require('body-parser');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('db.db');
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // set the path "/static" to serve files from the static folder
@@ -26,50 +27,77 @@ app.get('/login', function (req, res) {
 });
 
 app.post('/signup', function (req, res) {
-   var email = req.body.email;
-   var password = req.body.password;
+ var email = req.body.email;
+ var password = req.body.password;
 
-    db.run("INSERT INTO userlog " +
-    	"(username, password) " +
-    	"VALUES (?, ?)",
-    		email,
-    		password);
-    res.render('index.html',{"username": email});
+ db.run("INSERT INTO userlog " +
+   "(username, password) " +
+   "VALUES (?, ?)",
+   email,
+   password);
+ res.render('index.html',{"username": email});
 
 });
 
 app.post('/login', function (req, res) {
 	var email = req.body.email;
   var password = req.body.password;
-	db.get("SELECT password FROM userlog where username = ?", email, function(err, row) {
+  db.get("SELECT password FROM userlog where username = ?", email, function(err, row) {
     if(row == null){
       res.render('login.html', {"notification": "Username not found!"});
     } else if(row.password == password){
-			res.render('index.html', {'username':email});
-		} else {
-      res.render('login.html', {"notification": "Wrong password!"});
-    }
+     res.render('index.html', {'username':email});
+   } else {
+    res.render('login.html', {"notification": "Wrong password!"});
+  }
 
-  });
+});
 });
 
 app.post('/addTask', function (req, res) {
   var taskname = req.body.taskname;
   var email = req.body.email;
+  var status = req.body.status;
   console.log("add task " + taskname);
-  db.run("INSERT INTO tasklog " +
+  db.get("SELECT MAX(taskid) as count FROM tasklog", function(err, row) {
+    row.count;
+    db.run("INSERT INTO tasklog " +
       "(username, taskid, taskname, location, date, status) " +
       "VALUES (?, ?, ?, ?, ?, ?)",
-        email,0,taskname,"","",0);
+      email,row.count+1,taskname,"","",status);
+    res.json({"taskid":row.count+1});
+
+  });
+  
 });
 
 app.post('/fetchTasks', function (req, res) {
 	var email = req.body.email;
 	console.log("fetch tasks " + email);
-	db.get("SELECT taskid, taskname, location, date, status FROM tasklog WHERE username = ?", email, function(err, row) {
-		res.render('index.html');
-	});
+	db.all("SELECT taskid, taskname, location, date, status FROM tasklog WHERE username = ? "+
+    "order by taskid ASC", email, function(err, rows) {
+      res.json(rows); 
+    });
 });
+
+app.post('/deleteTask', function (req, res) {
+  var taskid= req.body.taskid;
+  console.log("delete task " + taskid);
+  db.run("delete from tasklog where taskid = ?",
+    taskid);
+  res.json("");
+
+});
+app.post('/changeStatus', function (req, res) {
+  var taskstatus= req.body.taskstatus;
+  var taskid = req.body.taskid;
+  console.log("change status taskid " + taskid);
+  db.run("update tasklog set status = ? where taskid = ?",taskstatus,
+    taskid);
+  res.json("");
+
+});
+
 
 var bourbon = require('node-bourbon');
 bourbon.includePaths // Array of Bourbon paths 

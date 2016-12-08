@@ -1,3 +1,19 @@
+//show login button or not
+var guest = "Guest";
+var username = document.getElementById('username').innerHTML.trim();
+var loginSpan = document.getElementById('login');
+
+if(username != guest){
+  loginSpan.innerHTML = "<a href=\"/\">Sign off</a>";
+  //list tasks
+  $.post("/fetchTasks", {email: username},function(json){
+    for (var i = 0; i < json.length; i++){
+      createTask(json[i]);
+    }
+
+  });
+
+}
 var myNodelist = document.getElementsByTagName("LI");
 var i;
 for (i = 0; i < myNodelist.length; i++) {
@@ -9,52 +25,75 @@ for (i = 0; i < myNodelist.length; i++) {
 }
 
 // Click on a close button to hide the current list item
-var close = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-  close[i].onclick = function() {
-    var div = this.parentElement;
-    div.style.display = "none";
+//deleteTask();
+function deleteTask(){
+  var close = document.getElementsByClassName("close");
+  var i;
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+      //delete task
+      $.post("/deleteTask",{taskid:div.id});
+    }
   }
+
 }
 
 // Add a "checked" symbol when clicking on a list item
 var list = document.querySelector('ul');
 list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
+  if (ev.target.tagName == 'LI') {
     ev.target.classList.toggle('checked');
+    if(ev.target.className == 'checked'){
+      $.post("/changeStatus",{taskid:ev.target.id, taskstatus:"1"});
+    }else{
+      $.post("/changeStatus",{taskid:ev.target.id, taskstatus:"0"})
+    }
   }
 }, false);
 
-// Create a new list item when clicking on the "Add" button
-function newElement() {
-  var li = document.createElement("li");
-  var inputValue = document.getElementById("myInput").textContent;
-  var t = document.createTextNode(inputValue);
-  var username = document.getElementById('username').innerHTML.trim()
-  
-    //list tasks
-  $.post("/fetchTasks", {email: username});
-    //add task
-  $.post("/addTask",{email:username, taskname:inputValue});
-  li.appendChild(t);
-  if (inputValue === '') {
-    alert("You must write something!");
-  } else {
-    document.getElementById("myUL").appendChild(li);
-  }
-  document.getElementById("myInput").value = "";
+function createTask(task) {
 
+  var li = document.createElement("li");
+  var t = document.createTextNode(task["taskname"]);
+  if(task["status"] == 1){
+    li.className = "checked";
+  }
+  li.setAttribute("id", task["taskid"]);
+  li.appendChild(t);
   var span = document.createElement("SPAN");
   var txt = document.createTextNode("\u00D7");
   span.className = "close";
   span.appendChild(txt);
   li.appendChild(span);
+  
+  document.getElementById("myUL").appendChild(li);
+  deleteTask();
 
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-      var div = this.parentElement;
-      div.style.display = "none";
-    }
+
+}
+// Create a new list item when clicking on the "Add" button
+function newElement() {
+  var inputValue = document.getElementById("myInput").textContent;
+  var username = document.getElementById('username').innerHTML.trim()
+  //add task if login
+
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+   if(username != guest){
+    $.post("/addTask",{email:username, taskname:inputValue, status: '0'},function(json){
+      var task = {};
+      task["taskname"] = inputValue;
+      task["status"] = 0;
+      task["taskid"] = json.taskid;
+      createTask(task);
+    });
   }
+
+}
+
+document.getElementById("myInput").value = "";
+
 }
