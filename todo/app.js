@@ -18,7 +18,7 @@ app.use('/routes', express.static(__dirname + '/routes'));
 app.use('/public', express.static(__dirname + '/public'));
 // Define your routes here
 app.get('/', function (req, res) {
-  res.render('index.html', {"username": "Guest"});
+  res.render('index.html', {"username": "Guest", "email":""});
 });
 
 app.get('/login', function (req, res) {
@@ -29,29 +29,47 @@ app.get('/login', function (req, res) {
 app.post('/signup', function (req, res) {
  var email = req.body.email;
  var password = req.body.password;
-
+ var username = req.body.username;
  db.run("INSERT INTO userlog " +
-   "(username, password) " +
-   "VALUES (?, ?)",
-   email,
-   password);
- res.render('index.html',{"username": email});
+   "(username, password, email) " +
+   "VALUES (?, ?,?)",
+   username,
+   password,email);
+ res.render('index.html', {'username':username, 'email':email});
 
 });
 
 app.post('/login', function (req, res) {
-	var email = req.body.email;
+  var username = req.body.name;
+  var email = req.body.email;
   var password = req.body.password;
-  db.get("SELECT password FROM userlog where username = ?", email, function(err, row) {
-    if(row == null){
-      res.render('login.html', {"notification": "Username not found!"});
-    } else if(row.password == password){
-     res.render('index.html', {'username':email});
-   } else {
-    res.render('login.html', {"notification": "Wrong password!"});
-  }
+  var confpassword = req.body.confpassword;
+  console.log(email);
+  if(username == "" || confpassword == ""){
+    //sign in
+    console.log("sign in");
 
-});
+    db.get("SELECT username, password FROM userlog where email = ?", email, function(err, row) {
+      if(row == null){
+        res.render('login.html', {"notification": "Email not found!"});
+      } else if(row.password == password){
+       res.render('index.html', {'username':row.username, 'email':email});
+     } else {
+      res.render('login.html', {"notification": "Wrong password!"});
+    }
+
+  });
+  }else{
+    // sign up
+    console.log("sign up");
+    db.run("INSERT INTO userlog " +
+     "(username, password, email) " +
+     "VALUES (?, ?,?)",
+     username,
+     password,email);
+    res.render('index.html', {'username':username, 'email':email});
+
+  }
 });
 
 app.post('/addTask', function (req, res) {
@@ -74,7 +92,7 @@ app.post('/addTask', function (req, res) {
 app.post('/fetchTasks', function (req, res) {
 	var email = req.body.email;
 	console.log("fetch tasks " + email);
-	db.all("SELECT taskid, taskname, location, date, status FROM tasklog WHERE username = ? "+
+	db.all("SELECT taskid, taskname, location, date, status FROM tasklog WHERE email = ? "+
     "order by taskid ASC", email, function(err, rows) {
       res.json(rows); 
     });

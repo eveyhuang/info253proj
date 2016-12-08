@@ -1,12 +1,12 @@
 //show login button or not
-var guest = "Guest";
-var username = document.getElementById('username').innerHTML.trim();
+var guest = "";
+var email = document.getElementById('email').innerHTML.trim();
 var loginSpan = document.getElementById('login');
 
-if(username != guest){
+if(email != guest){
   loginSpan.innerHTML = "<a href=\"/\">Sign off</a>";
   //list tasks
-  $.post("/fetchTasks", {email: username},function(json){
+  $.post("/fetchTasks", {email: email},function(json){
     for (var i = 0; i < json.length; i++){
       createTask(json[i]);
     }
@@ -76,14 +76,14 @@ function createTask(task) {
 // Create a new list item when clicking on the "Add" button
 function newElement() {
   var inputValue = document.getElementById("myInput").textContent;
-  var username = document.getElementById('username').innerHTML.trim()
+  var email= document.getElementById('email').innerHTML.trim()
   //add task if login
 
   if (inputValue === '') {
     alert("You must write something!");
   } else {
-   if(username != guest){
-    $.post("/addTask",{email:username, taskname:inputValue, status: '0'},function(json){
+   if(email != guest){
+    $.post("/addTask",{email:email, taskname:inputValue, status: '0'},function(json){
       var task = {};
       task["taskname"] = inputValue;
       task["status"] = 0;
