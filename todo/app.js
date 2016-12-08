@@ -24,6 +24,7 @@ app.get('/login', function (req, res) {
 
   res.render('login.html',{"notification": ""});
 });
+
 app.post('/signup', function (req, res) {
    var email = req.body.email;
    var password = req.body.password;
@@ -36,6 +37,7 @@ app.post('/signup', function (req, res) {
     res.render('index.html',{"username": email});
 
 });
+
 app.post('/login', function (req, res) {
 	var email = req.body.email;
   var password = req.body.password;
@@ -50,6 +52,7 @@ app.post('/login', function (req, res) {
 
   });
 });
+
 app.post('/addTask', function (req, res) {
   var taskname = req.body.taskname;
   var email = req.body.email;
@@ -59,6 +62,7 @@ app.post('/addTask', function (req, res) {
       "VALUES (?, ?, ?, ?, ?, ?)",
         email,0,taskname,"","",0);
 });
+
 app.post('/fetchTasks', function (req, res) {
 	var email = req.body.email;
 	console.log("fetch tasks " + email);
@@ -66,6 +70,7 @@ app.post('/fetchTasks', function (req, res) {
 		res.render('index.html');
 	});
 });
+
 var bourbon = require('node-bourbon');
 bourbon.includePaths // Array of Bourbon paths 
 

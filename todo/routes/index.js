@@ -32,6 +32,7 @@ function newElement() {
   var inputValue = document.getElementById("myInput").textContent;
   var t = document.createTextNode(inputValue);
   var username = document.getElementById('username').innerHTML.trim()
+  
     //list tasks
   $.post("/fetchTasks", {email: username});
     //add task
