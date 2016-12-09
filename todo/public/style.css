@@ -143,6 +143,9 @@ padding-bottom: 3em;
 a{
   color:white;
 }
+#orange{
+  color :#FF9707;
+}
 #banner {
     padding: 0em 0 3em 0;
     background-image: url(../public/banner2.jpg);
