@@ -1,16 +1,24 @@
+//date
+var date = document.getElementById('date');
+date.valueAsDate = new Date();
+date.setAttribute("min", new Date());
+
 //show login button or not
-var guest = "";
-var email = document.getElementById('email').innerHTML.trim();
+var nameSpan = document.getElementById('username');
 var loginSpan = document.getElementById('login');
-if(email != guest){
-  loginSpan.innerHTML = "<a href=\"/\">Sign off</a>";
+if(sessionStorage.email && sessionStorage.name){
+  nameSpan.innerHTML = sessionStorage.name
+  loginSpan.innerHTML = "<a href=\"/\" onclick = \"sessionStorage.clear();\">Sign off</a>";
   //list tasks
-  $.post("/fetchTasks", {email: email},function(json){
+  $.post("/fetchTasks", {email: sessionStorage.email},function(json){
     for (var i = 0; i < json.length; i++){
       createTask(json[i]);
     }
   });
 }
+//calendar
+
+
 var myNodelist = document.getElementsByTagName("LI");
 var i;
 for (i = 0; i < myNodelist.length; i++) {
@@ -57,9 +65,14 @@ function createTask(task) {
   if(task["status"] == 1){
     li.className = "checked";
   }
+
   li.setAttribute("id", task["taskid"]);
-  li.appendChild(t);
+  li.appendChild(document.createTextNode(task["taskname"]));
   var span = document.createElement("SPAN");
+  span.appendChild(document.createTextNode(task["date"]));
+  li.appendChild(span);
+  span.setAttribute("id","taskdate");
+  span = document.createElement("SPAN");
   var txt = document.createTextNode("\u00D7");
   span.className = "close";
   span.appendChild(txt);
@@ -69,23 +82,26 @@ function createTask(task) {
 }
 // Create a new list item when clicking on the "Add" button
 function newElement() {
-  var inputValue = document.getElementById("myInput").textContent;
-  var email= document.getElementById('email').innerHTML.trim()
+  var taskname = document.getElementById("taskname").textContent;
+  var date = document.getElementById('date').value;
   //add task if login
 
-  if (inputValue === '') {
+  if (taskname === '') {
     alert("You must write something!");
   } else {
     var task = {};
-        task["taskname"] = inputValue;
-        task["status"] = 0;
-    createTask(task);
-    if(email != guest){
-      $.post("/addTask",{email:email, taskname:inputValue, status: '0'},function(json){
+    task["taskname"] = taskname;
+    task["status"] = 0;
+    task["date"] = date;
+    if(sessionStorage.email){
+      $.post("/addTask",{email:sessionStorage.email, taskname:taskname, status: '0',date:date},function(json){
         task["taskid"] = json.taskid;
+        createTask(task);
       });
+    }else{
+      createTask(task);
     }
 
   }
-  document.getElementById("myInput").value = "";
+  document.getElementById("taskname").value = "";
 }

@@ -1,52 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="/public/login.css" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Special+Elite|Quattrocento+Sans" rel="stylesheet">
+  <link href="/public/login.css" type="text/css" rel="stylesheet">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 </head>
 <body>
 
-<div class="cont_principal">
-<div id = "notification">{{notification}}
-</div>
-  <div class="cont_centrar">
-  <div class="cont_login">
-    <form action="/login" method="post" id = "login" onsubmit="return check();">
-    <div class="cont_tabs_login">
-      <ul class='ul_tabs'>
-        <li class="active"><a href="#" onclick="sign_in()">SIGN IN</a>
-        <span class="linea_bajo_nom"></span>
-        </li>
-        <li><a href="#up" onclick="sign_up()">SIGN UP</a><span class="linea_bajo_nom"></span>
-        </li>
-      </ul>
-      </div>
-  <div class="cont_text_inputs">
-      <input type="text" class="input_form_sign " placeholder="NAME" name="name" />
-
-    <input type="email" class="input_form_sign d_block active_inp" placeholder="EMAIL" name="email" />
-
-    <input type="password" class="input_form_sign d_block  active_inp" placeholder="PASSWORD" name="password" />
-   <input type="password" class="input_form_sign" placeholder="CONFIRM PASSWORD" name="confpassword" />
-
-    <a href="#" class="link_forgot_pass d_block" >Forgot Password ?</a>
-<div class="terms_and_cons d_none">
-    <p><input type="checkbox" name="terms_and_cons" /> <label for="terms_and_cons">Accept  Terms and Conditions.</label></p>
+  <div class="cont_principal">
     
+    <div class="cont_centrar">
+    <div id = "notification">{{notification}}
+     </div>
+      <div class="cont_login">
+      <form id = "login" onsubmit="return check();">
+          <div class="cont_tabs_login">
+            <ul class='ul_tabs'>
+              <li class="active"><a href="#" onclick="sign_in()">Sign in</a>
+                <span class="linea_bajo_nom"></span>
+              </li>
+              <li><a href="#up" onclick="sign_up()">Sign up</a><span class="linea_bajo_nom"></span>
+              </li>
+            </ul>
+          </div>
+          <div class="cont_text_inputs">
+            <input type="text" class="input_form_sign " placeholder="NAME" name="name" />
+
+            <input type="email" class="input_form_sign d_block active_inp" placeholder="EMAIL" name="email" />
+
+            <input type="password" class="input_form_sign d_block  active_inp" placeholder="PASSWORD" name="password" />
+            <input type="password" class="input_form_sign" placeholder="CONFIRM PASSWORD" name="confpassword" />
+
+            <a href="#" class="link_forgot_pass d_block" >Forgot Password ?</a>
+            <div class="terms_and_cons d_none">
+              <!--<p><input type="checkbox" name="terms_and_cons" /> <label for="terms_and_cons">Accept  Terms and Conditions.</label></p>-->
+
+            </div>
+          </div>
+          <div class="cont_btn">
+           <button class="btn_sign">SIGN IN</button>
+
+         </div>
+
+       </form>
+
     </div>
-      </div>
-<div class="cont_btn">
-     <button class="btn_sign">SIGN IN</button>
-
-      </div>
-
-    </form>
-    </div>
-
-  </div>
 
 
-</div>
+   </div>
 
-<script src="/routes/login.js"></script>
+ </div>
+
+ <script src="/routes/login.js"></script>
 </body>
 </html>

@@ -1,5 +1,4 @@
-@import '//fonts.googleapis.com/css?family=Quattrocento+Sans|Gravitas+One';
-@import '//file.myfontastic.com/ZaFwNCeg8fYbraeqqP46nE/icons.css';
+
 *,
 *:before,
 *:after {
@@ -8,17 +7,17 @@
 body {
   font: 18px/1.6 'Quattrocento Sans', sans-serif;
 }
-h1,
-h3 {
+
+h1,h3 {
   text-align: center;
   /*font-family: 'Gravitas One', cursive;*/
   font-family: 'Special Elite', cursive;
   margin: 0;
+  color:#ffffff;
 }
-[class*='ico-'] {
-  font-family: todo;
-  font-size: 1.4rem;
-  line-height: 1;
+#taskdate {
+  padding-left: 2rem;
+  font-size: 0.5rem;
 }
 .todo {
   width: 80%;
@@ -32,15 +31,20 @@ h3 {
   position: relative;
   align-items: flex-start;
 }
+.todo_item.date{
+
+}
 .todo_item > a {
   text-decoration: none;
-  color: #000;
+  color: white;
   text-align: center;
   position: relative;
   top: .25em;
+  font-weight: bold;
 }
 .todo_task,
 .todo_new {
+  color:white;
   width: 100%;
   outline: none;
   border-bottom: 1px solid #ccc;
@@ -63,7 +67,15 @@ h3 {
   display: block;
 }
 
+#calendar{
+  text-align: right;
+  padding-right:2em;
 
+}
+#calendar a:link{
+    text-decoration: none;
+     font-family: 'Special Elite', cursive;
+}
 /* Include the padding and border in an element's total width and height */
 * {
   box-sizing: border-box;
@@ -122,33 +134,25 @@ ul li.checked::before {
   width: 7px;
 }
 
-/* Style the close button */
-.close {
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 12px 16px 12px 16px
-}
-
-.close:hover {
-  background-color: #f44336;
-  color: white;
-}
-
 /* Style the header */
-.header {
-  background-color: #f44336;
-  padding: 30px 40px;
-  color: white;
-  text-align: center;
+header{
+  color:white;
+padding-bottom: 3em;
 }
 
-/* Clear floats after the header */
-.header:after {
-  content: "";
-  display: table;
-  clear: both;
+a{
+  color:white;
 }
+#banner {
+    padding: 0em 0 3em 0;
+    background-image: url(../public/banner2.jpg);
+    background-size: cover;
+    background-position: bottom;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    position: relative;
+  }
+
 
 /* Style the input */
 input {
@@ -157,22 +161,18 @@ input {
   padding: 10px;
   float: left;
   font-size: 16px;
+  background-color: transparent;
+  color:#ffffff;
 }
 
-/* Style the "Add" button */
-.addBtn {
-  padding: 10px;
-  width: 25%;
-  background: #d9d9d9;
-  color: #555;
-  float: left;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px
 }
 
-.addBtn:hover {
-  background-color: #bbb;
+.close:hover {
+  background-color:  #FF9707;
+  color: white;
 }
-/*Calender*/

@@ -1,10 +1,12 @@
 //button sign
 
 function check(){
+
+  event.preventDefault()
   var notification = document.getElementById('notification');
   console.log("check");
-  var email = document.getElementsByName('password')[0].value;
-  var name = document.getElementsByName('password')[0].value;
+  var email = document.getElementsByName('email')[0].value;
+  var name = document.getElementsByName('name')[0].value;
   var password = document.getElementsByName('password')[0].value;
   var confpassword = document.getElementsByName('confpassword')[0].value;
   if(document.querySelector('.btn_sign').innerHTML == "SIGN UP"){
@@ -25,6 +27,28 @@ function check(){
       notification.innerHTML="Passwords are not the same."
       return false;
     }
+    $.ajax
+    ({
+      type: "POST",
+      url: "/signup",
+      dataType: 'json',
+      headers: {
+        "Authorization": "Basic " + btoa(email + ":" + password)
+      },
+      data:{
+        "name":name
+      },
+      success : function (r) {
+        if(r.status == 0){
+          sessionStorage.email = email;
+          sessionStorage.name = name;
+          //console.log(sessionStorage.email);
+          window.location.assign("/");
+        }else{
+          window.location.assign("/login?status="+r.status);
+        }
+      }
+    });
   }else{
     if(email.length == 0){
       notification.innerHTML="Input the email."
@@ -34,6 +58,25 @@ function check(){
       notification.innerHTML="Input the password."
       return false;
     }
+    
+    $.ajax
+    ({
+      type: "POST",
+      url: "/",
+      headers: {
+        "Authorization": "Basic " + btoa(email + ":" + password)
+      },
+      success : function (r) {
+        if(r.status == 0){
+          sessionStorage.email = email;
+          sessionStorage.name = r.username;
+          //console.log(sessionStorage.email);
+          window.location.assign("/");
+        }else{
+          window.location.assign("/login?status="+r.status);
+        }
+      }
+    });
 
   }
 }
