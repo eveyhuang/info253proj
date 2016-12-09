@@ -103,5 +103,6 @@ function newElement() {
     }
 
   }
-  document.getElementById("taskname").value = "";
+  document.getElementById('date').valueAsDate=new Date();
+  document.getElementById("taskname").textContent = "";
 }
