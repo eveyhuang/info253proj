@@ -82,18 +82,18 @@ function newElement() {
   if (inputValue === '') {
     alert("You must write something!");
   } else {
-   if(email != guest){
-    $.post("/addTask",{email:email, taskname:inputValue, status: '0'},function(json){
-      var task = {};
-      task["taskname"] = inputValue;
-      task["status"] = 0;
-      task["taskid"] = json.taskid;
-      createTask(task);
-    });
+    var task = {};
+        task["taskname"] = inputValue;
+        task["status"] = 0;
+    createTask(task);
+    if(email != guest){
+      $.post("/addTask",{email:email, taskname:inputValue, status: '0'},function(json){
+        task["taskid"] = json.taskid;
+      });
+    }
+
   }
 
-}
-
-document.getElementById("myInput").value = "";
+  document.getElementById("myInput").value = "";
 
 }
