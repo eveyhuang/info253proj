@@ -80,7 +80,7 @@ app.post('/addTask', function (req, res) {
   db.get("SELECT MAX(taskid) as count FROM tasklog", function(err, row) {
     row.count;
     db.run("INSERT INTO tasklog " +
-      "(username, taskid, taskname, location, date, status) " +
+      "(email, taskid, taskname, location, date, status) " +
       "VALUES (?, ?, ?, ?, ?, ?)",
       email,row.count+1,taskname,"","",status);
     res.json({"taskid":row.count+1});
