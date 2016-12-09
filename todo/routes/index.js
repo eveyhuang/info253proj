@@ -2,7 +2,6 @@
 var guest = "";
 var email = document.getElementById('email').innerHTML.trim();
 var loginSpan = document.getElementById('login');
-
 if(email != guest){
   loginSpan.innerHTML = "<a href=\"/\">Sign off</a>";
   //list tasks
@@ -10,9 +9,7 @@ if(email != guest){
     for (var i = 0; i < json.length; i++){
       createTask(json[i]);
     }
-
   });
-
 }
 var myNodelist = document.getElementsByTagName("LI");
 var i;
@@ -67,11 +64,8 @@ function createTask(task) {
   span.className = "close";
   span.appendChild(txt);
   li.appendChild(span);
-  
   document.getElementById("myUL").appendChild(li);
   deleteTask();
-
-
 }
 // Create a new list item when clicking on the "Add" button
 function newElement() {
@@ -93,7 +87,5 @@ function newElement() {
     }
 
   }
-
   document.getElementById("myInput").value = "";
-
 }
