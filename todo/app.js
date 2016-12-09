@@ -26,18 +26,6 @@ app.get('/login', function (req, res) {
   res.render('login.html',{"notification": ""});
 });
 
-app.post('/signup', function (req, res) {
- var email = req.body.email;
- var password = req.body.password;
- var username = req.body.username;
- db.run("INSERT INTO userlog " +
-   "(username, password, email) " +
-   "VALUES (?, ?,?)",
-   username,
-   password,email);
- res.render('index.html', {'username':username, 'email':email});
-
-});
 
 app.post('/login', function (req, res) {
   var username = req.body.name;
@@ -62,14 +50,24 @@ app.post('/login', function (req, res) {
   }else{
     // sign up
     console.log("sign up");
-    db.run("INSERT INTO userlog " +
-     "(username, password, email) " +
-     "VALUES (?, ?,?)",
-     username,
-     password,email);
-    res.render('index.html', {'username':username, 'email':email});
 
+    db.get("SELECT * FROM userlog where email = ?", email, function(err, row) {
+      if(row != null){
+        res.render('login.html', {"notification": "Email already signed up!"});
+      }else{
+        db.run("INSERT INTO userlog " +
+         "(username, password, email) " +
+         "VALUES (?, ?,?)",
+         username,
+         password,email);
+        res.render('index.html', {'username':username, 'email':email});
+      }
+    });
+    
   }
+
+
+
 });
 
 app.post('/addTask', function (req, res) {
